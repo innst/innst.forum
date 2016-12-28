@@ -1,0 +1,8 @@
+.color-red.button:not(.button-fill), .color-red.buttons-row .button, .theme-red .button:not(.button-fill) {border-color: #C41134;}
+.list-block .item-link.list-button.color-red, .tabbar a.active.color-red, a.color-red {color: #C41134;}
+.bg-red, .button.button-fill.bg-red, .list-block .swipeout-actions-left a.bg-red, .list-block .swipeout-actions-right a.bg-red, a.bg-red{background-color: #C41134;}
+.color-red i.icon, .theme-red i.icon, i.icon.color-red, i.icon.theme-red{color: #C41134;}
+
+
+.navbar.layout-dark{background-color: #707982;}
+.panel{background: #707982;}
