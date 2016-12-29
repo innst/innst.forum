@@ -81,7 +81,7 @@ window.myApp.onPageInit('*', function (page) {
 //console.log(page);
 if(typeof window.initPageLoadCallback == 'function'){
 	window.initPageLoadCallback(page);
-	window.myApp.hidePreloader();
+	window.myApp.hideIndicator();
 }
 return;
 });
@@ -105,7 +105,7 @@ if(typeof device != 'undefined') {
 
 var timer = setTimeout(function t(){
 	if(!loadCnt) {
-		setTimeout(t,300);
+		setTimeout(t,30);
 	}else{
 		content = loadCnt;
 		loadCnt = false;
@@ -121,7 +121,7 @@ var timer = setTimeout(function t(){
 		  animatePages: false,
 		  reload: window.reload
 		});
-		setTimeout(function(){window.myApp.hidePreloader();},500);
+		setTimeout(function(){window.myApp.hideIndicator();},500);
 		
 		//window.reload = false;
 		loadJs();
@@ -129,7 +129,7 @@ var timer = setTimeout(function t(){
 		loadCss();
 		//refreshBook();
 	}
-},300);
+},30);
 
 if(typeof(window.openDatabase) !== 'undefined'){
 	db = window.openDatabase('discount.db','1.0','Discount',1*1024*1024);
@@ -214,7 +214,7 @@ function getTmpl(id){
 var loader = false;
 
 function getPage(page){
-	window.myApp.showPreloader("Загрузка страницы");
+	window.myApp.showIndicator();
 	checkConnection();
 	
 	if(typeof window.getPageHandler == 'function'){
@@ -233,7 +233,7 @@ function getPage(page){
 	
 	var timer = setTimeout(function t(){
 	if(!loadVersion) {
-		setTimeout(t,300);
+		setTimeout(t,30);
 	}else{
 		
 		var last = getVersion();
@@ -352,7 +352,7 @@ function loadPageForUrl(href){
 		
 		var timer = setTimeout(function t(){
 		if(!loadCnt) {
-			setTimeout(t,300);
+			setTimeout(t,30);
 		}else{
 		content = loadCnt;
 		loadCnt = false;
@@ -370,10 +370,10 @@ function loadPageForUrl(href){
 		  reload: window.reload,
 		  ignoreCache: true
 		});
-		window.myApp.hidePreloader();
+		window.myApp.hideIndicator();
 			
 		}
-		},300);
+		},30);
 	
 	}else{
 		return;
