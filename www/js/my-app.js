@@ -2,8 +2,8 @@
 //device.uuid
 window.reloadPageInJs = false;
 
-window.debug = true;
-window.startUrl = 'http://new.forum-nnov.ru/ajax/mobil_app/';
+window.debug = false;
+window.startUrl = 'http://new.forum-nnov.ru/api/mobil_app/';
 
 window.deviceId = '';
 
@@ -13,6 +13,7 @@ window.onPageGenerate = false;
 window.connection = false;
 
 window.reload = false;
+window.curentLoadBase = false;
 
 //version
 var version = localStorage.getItem('version');
@@ -59,7 +60,7 @@ function onRd(){
 window.myApp = new Framework7({
 	modalButtonOk: 'Подвердить',
 	modalButtonCancel: 'Отменить',
-	swipeBackPage: false,
+	swipeBackPage: true,
 	sortable: false,
 	swipeout: false,
 	swipePanel: 'left',
@@ -78,10 +79,11 @@ window.mainView = window.myApp.addView('.view-main',{
 });
 
 window.myApp.onPageInit('*', function (page) {
-//console.log(page);
+console.log(page);
+console.log('сработал - onPageInit');
 if(typeof window.initPageLoadCallback == 'function'){
 	window.initPageLoadCallback(page);
-	window.myApp.hideIndicator();
+	window.myApp.hidePreloader();
 }
 return;
 });
@@ -105,7 +107,7 @@ if(typeof device != 'undefined') {
 
 var timer = setTimeout(function t(){
 	if(!loadCnt) {
-		setTimeout(t,30);
+		setTimeout(t,100);
 	}else{
 		content = loadCnt;
 		loadCnt = false;
@@ -121,7 +123,7 @@ var timer = setTimeout(function t(){
 		  animatePages: false,
 		  reload: window.reload
 		});
-		setTimeout(function(){window.myApp.hideIndicator();},500);
+		window.myApp.hidePreloader();
 		
 		//window.reload = false;
 		loadJs();
@@ -129,12 +131,12 @@ var timer = setTimeout(function t(){
 		loadCss();
 		//refreshBook();
 	}
-},30);
+},100);
 
 if(typeof(window.openDatabase) !== 'undefined'){
-	db = window.openDatabase('discount.db','1.0','Discount',1*1024*1024);
+	db = window.openDatabase('mliferasp.db','1.0','mliferasp',1*1024*1024);
 }else{
-	db = window.sqlitePlugin.openDatabase({name: 'discount',location: 'default'},function(db){});
+	db = window.sqlitePlugin.openDatabase({name: 'mliferasp',location: 'default'},function(db){});
 }
 db.transaction(function(tx){
 tx.executeSql("CREATE TABLE IF NOT EXISTS pages (ID VARCHAR PRIMARY KEY, type VARCHAR, text TEXT)",[]);
@@ -214,7 +216,7 @@ function getTmpl(id){
 var loader = false;
 
 function getPage(page){
-	window.myApp.showIndicator();
+	window.myApp.showPreloader("Загрузка страницы");
 	checkConnection();
 	
 	if(typeof window.getPageHandler == 'function'){
@@ -233,7 +235,7 @@ function getPage(page){
 	
 	var timer = setTimeout(function t(){
 	if(!loadVersion) {
-		setTimeout(t,30);
+		setTimeout(t,300);
 	}else{
 		
 		var last = getVersion();
@@ -242,7 +244,7 @@ function getPage(page){
 		lpage(page);
 		
 	}
-	},1000);
+	},300);
 	
 	
 	}else{
@@ -258,26 +260,27 @@ function getPage(page){
 	db.transaction(function(tx){
 	tx.executeSql("SELECT * FROM pages WHERE ID=?",[page],function(t,res){
 	if(res.rows.length > 0){
-	var tmp = getTmpl(res.rows.item(0)['type']);
-	if(!tmp){
-		loadCnt = '<p class="errorPage">ERROR load page '+page+'</p>';
-	}else{
-		if (window.debug) console.log('startpage - '+page);
-		if(window.onPageGenerate !== false) {
-			var loadCntTemp = window.onPageGenerate(page,JSON.parse(res.rows.item(0)['text']),tmp);
-			if(loadCntTemp) loadCnt = loadCntTemp;
+		var tmp = getTmpl(res.rows.item(0)['type']);
+		if(!tmp){
+			loadCnt = '<div class="content-block-inner"><p class="errorPage">ERROR load page '+page+'</p><p>Шаблон не найден, возможно произошла ошибка при загрузке данных. Проверьте соединение с Internet и повторите загрузку.</p><p><a href="#" id="loadBase" class="button active">Загрузить данные</a></p></div>';
+		}else{
+			if (window.debug) console.log('startpage - '+page);
+			if(window.onPageGenerate !== false) {
+				var loadCntTemp = window.onPageGenerate(page,JSON.parse(res.rows.item(0)['text']),tmp);
+				if(loadCntTemp) loadCnt = loadCntTemp;
+			}
+			if(!loadCnt){
+			var compiled = Template7(tmp).compile();
+			loadCnt = compiled(JSON.parse(res.rows.item(0)['text']));
+			}
 		}
-		if(!loadCnt){
-		var compiled = Template7(tmp).compile();
-		loadCnt = compiled(JSON.parse(res.rows.item(0)['text']));
-		}
-	}
 	}
 	
 	if((page == 'main' || page == 'main_old') && !loadCnt){
 		content = '' +                  
-		'<div class="content-block"> <div class="content-block-title">MLife. Скидки.</div><div class="content-block inset"><div class="content-block-inner">'+
-		''+
+		'<div class="content-block"> <div class="content-block inset"><div class="content-block-inner">'+
+		'<p>Это первый запуск приложения. Дождитесь загрузки данных.</p>'+
+		'<p><a href="#" id="loadBase" class="button active" style="display:none;">Загрузить данные</a></p>'+
 		''+
 		'</div>' +
 								'</div>'
@@ -285,12 +288,26 @@ function getPage(page){
 		'';
 		loadCnt = content;
 		loadBaseDefault();
+		
+	}else if(page == 'main_offline' && !loadCnt){
+		content = '' +                  
+		'<div class="content-block"> <div class="content-block inset"><div class="content-block-inner">'+
+		'<p>Это первый запуск приложения. подключитесь к сети Internet и загрузите данные.</p>'+
+		'<p><a href="#" id="loadBase" class="button active">Загрузить данные</a></p>'+
+		''+
+		'</div>' +
+								'</div>'
+		'</div>' +
+		'';
+		loadCnt = content;
+		//loadBaseDefault();
+	}else if(!loadCnt) {
+		loadCnt = '<div class="content-block-inner"><p class="errorPage">ERROR load page '+page+'</p></div>';
+		
 	}
-	
-	if(!loadCnt) loadCnt = '<p class="errorPage">ERROR load page '+page+'</p>';
 	},
 	function(tx,err){
-	loadCnt = '<p class="errorPage">ERROR sql load page '+page+'</p>';
+	loadCnt = '<div class="content-block-inner"><p class="errorPage">ERROR sql load page '+page+'</p></div>';
 	}
 	);
 	});
@@ -305,6 +322,7 @@ function getPage(page){
 
 $$(document).on('click','a.backlink',function(e){
 	e.preventDefault();
+	if(window.curentLoadBase) return false;
 	var count = 0;
 	var lastHistory = '';
 	var prevHistory = '';
@@ -313,7 +331,7 @@ $$(document).on('click','a.backlink',function(e){
 		prevHistory = lastHistory;
 		lastHistory = val;
 	});
-	//console.log(lastHistory);
+	
 	if((count > 0) && (prevHistory.indexOf("#content-") !== -1)) {
 		if((prevHistory.indexOf("#content-main") === 0) || (lastHistory.indexOf("#content-main") === 0)){
 			//window.myApp.openPanel("left");
@@ -321,6 +339,7 @@ $$(document).on('click','a.backlink',function(e){
 			return;
 		}else{
 			window.mainView.router.back();
+                        window.replacNavbarLeftMenu(prevHistory.replace('#content-',''));
 		}
 	}else{
 		//window.myApp.openPanel("left");
@@ -336,9 +355,13 @@ $$(document).on('click','a',function(e){
 	if($$(this).attr('href').indexOf('#') === 0){
 		e.preventDefault();
 	}
+	
 	if($$(this).attr('href').indexOf('link.html') === 0){
 	e.preventDefault();
 	}
+	
+	if(window.curentLoadBase) return false;
+	
 	loadPageForUrl($$(this).attr('href'));
 	
 	
@@ -352,7 +375,7 @@ function loadPageForUrl(href){
 		
 		var timer = setTimeout(function t(){
 		if(!loadCnt) {
-			setTimeout(t,30);
+			setTimeout(t,300);
 		}else{
 		content = loadCnt;
 		loadCnt = false;
@@ -363,17 +386,22 @@ function loadPageForUrl(href){
 		pullToRefresh = false;
 		content = '<div class="page" data-page="'+curentPage+'"><div class="page-content pull-to-refresh-content"><div class="pull-to-refresh-layer"><div class="preloader"></div><div class="pull-to-refresh-arrow"></div></div>'+content+'</div></div>';
 		}
-		
+		if(curentPage == 'main' || curentPage == 'main_old') {
+			window.reload = true;
+		}
 		window.mainView.router.load({
 		  content: content,
 		  animatePages: false,
 		  reload: window.reload,
 		  ignoreCache: true
 		});
-		window.myApp.hideIndicator();
+		if(curentPage == 'main' || curentPage == 'main_old') {
+			window.reload = false;
+		}
+		window.myApp.hidePreloader();
 			
 		}
-		},30);
+		},300);
 	
 	}else{
 		return;
@@ -402,27 +430,36 @@ if(last == version){
 		
 		loadVersion = false;
 		
+		setTimeout(function(){
 		$$.ajax({
 			url : window.startUrl+'version/',
 			async : false,
 			data : {device:window.deviceId, key: localStorage.getItem('authorize_key')},
 			dataType: 'html',
+			timeout: 5000,
 			success : function(data){
 				if(data != version) {
 					localStorage.setItem('last_version',data);
+					version = data;
 					loadVersion = true;
 				}else{
 					loadVersion = true;
 				}
 			},
 			error: function(){
-				
+				window.connection = false;
+				loadVersion = true;
 			}
 		});
+		},150);
 		
+	}else{
+		loadVersion = true;
 	}
+}else{
+	loadVersion = true;
 }
-loadVersion = true;
+
 
 return last;
 }
@@ -480,6 +517,7 @@ db.transaction(function(tx){
 }
 
 $$(document).on('click', '#exit', function () {
+if(window.curentLoadBase) return false;
 	if (navigator && navigator.app) {
          navigator.app.exitApp();
     }else{
@@ -490,6 +528,7 @@ $$(document).on('click', '#exit', function () {
 });
 
 $$(document).on('click', '#loadBase',function (e) {
+if(window.curentLoadBase) return false;
 	loadBaseDefault();
 });
 
@@ -497,21 +536,24 @@ var pages_arr = [];
 
 function loadBaseDefault(step,step2){
 	
+	setTimeout(function(){
 	if(!step){
+	window.curentLoadBase = true;
 	checkConnection();
 	if(!window.connection) {
 		window.myApp.alert('Нет соединения, загрузка невозможна.','Уведомление');
+		window.curentLoadBase = false;
 		return;
 	}
 	
-	$$('.page-content').append('<div class="content-block" id="ldTimer" style="margin:5px;"><div class="content-block-inner"><div class="loadpersent" style="border-radius:3px;display:block;width:10%;background:green;height:20px;color:#ffffff;text-align:center;">0%</div></div></div></div>');
+	$$('body .ldTimer').remove();
+	$$('body .page-on-center .page-content').prepend('<div class="content-block ldTimer" id="ldTimer" style="margin:5px;"><div class="content-block-inner"><div class="loadpersent" style="border-radius:3px;display:block;width:10%;background:green;height:20px;color:#ffffff;text-align:center;">0%</div></div></div></div>');
 	
 	//window.myApp.showPreloader('Идет загрузка данных...')
 	$$("#loadBase").hide();
 	
 	/*
 	var cntTimer = 0;
-
 	var timer = setTimeout(function t(){
 	if(!loader) {
 		cntTimer++;
@@ -531,7 +573,7 @@ function loadBaseDefault(step,step2){
 		tx.executeSql("DELETE FROM pages WHERE ID>0",[]);
 		tx.executeSql("DELETE FROM tmpl WHERE ID>0",[]);
 	},function(){},function(){
-		
+		tmpl = {};
 		loadBaseDefault(2);
 
 	});
@@ -553,15 +595,24 @@ function loadBaseDefault(step,step2){
 					});
 				},function(r){
 				},function(){
-					setTmpl();
+					
 					loadBaseDefault(3);
 				});
 			},
 			error : function(){
 				
-				$$('#ldTimer .loadpersent').html('Ошибка связи');
-				$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
-				$$("#loadBase").show();
+				db.transaction(function(tx){
+					tx.executeSql("DELETE FROM tmpl WHERE ID>0",[]);
+				},function(){},function(){
+					
+					$$('#ldTimer .loadpersent').html('Ошибка связи');
+					$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
+					$$("#loadBase").show();
+					window.curentLoadBase = false;
+					tmpl = {};
+
+				});
+				
 				
 			}
 		});
@@ -582,7 +633,7 @@ function loadBaseDefault(step,step2){
 					
 					db.transaction(function(tx){
 					tx.executeSql("INSERT INTO block (ID, text) VALUES (?,?)",['menu',data],function(){
-					loadMenu();
+					//loadMenu();
 					loadBaseDefault(4);
 					});
 					});
@@ -590,10 +641,17 @@ function loadBaseDefault(step,step2){
 			},
 			error : function(){
 				
-				$$('#ldTimer .loadpersent').html('Ошибка связи');
-				$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
-				$$("#loadBase").show();
-				
+				db.transaction(function(tx){
+					tx.executeSql("DELETE FROM tmpl WHERE ID>0",[]);
+				},function(){},function(){
+					
+					$$('#ldTimer .loadpersent').html('Ошибка связи');
+					$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
+					$$("#loadBase").show();
+					window.curentLoadBase = false;
+					tmpl = {};
+
+				});
 			}
 		});
 		
@@ -618,10 +676,17 @@ function loadBaseDefault(step,step2){
 			},
 			error : function(){
 				
-				$$('#ldTimer .loadpersent').html('Ошибка связи');
-				$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
-				$$("#loadBase").show();
-				
+				db.transaction(function(tx){
+					tx.executeSql("DELETE FROM tmpl WHERE ID>0",[]);
+				},function(){},function(){
+					
+					$$('#ldTimer .loadpersent').html('Ошибка связи');
+					$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
+					$$("#loadBase").show();
+					window.curentLoadBase = false;
+					tmpl = {};
+
+				});
 			}
 		});
 		
@@ -646,10 +711,17 @@ function loadBaseDefault(step,step2){
 			},
 			error : function(){
 				
-				$$('#ldTimer .loadpersent').html('Ошибка связи');
-				$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
-				$$("#loadBase").show();
-				
+				db.transaction(function(tx){
+					tx.executeSql("DELETE FROM tmpl WHERE ID>0",[]);
+				},function(){},function(){
+					
+					$$('#ldTimer .loadpersent').html('Ошибка связи');
+					$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
+					$$("#loadBase").show();
+					window.curentLoadBase = false;
+					tmpl = {};
+
+				});
 			}
 		});
 		
@@ -668,18 +740,27 @@ function loadBaseDefault(step,step2){
 			},
 			error : function(){
 				
-				$$('#ldTimer .loadpersent').html('Ошибка связи');
-				$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
-				$$("#loadBase").show();
-				
+				db.transaction(function(tx){
+					tx.executeSql("DELETE FROM tmpl WHERE ID>0",[]);
+				},function(){},function(){
+					
+					$$('#ldTimer .loadpersent').html('Ошибка связи');
+					$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
+					$$("#loadBase").show();
+					window.curentLoadBase = false;
+					tmpl = {};
+
+				});
 			}
 		});
 		
 	}
+	},150);
 	
 }
 
 function loadPages(step,data){
+	setTimeout(function(){
 	if(step === false){
 		
 		var cnt = 0;
@@ -737,20 +818,63 @@ function loadPages(step,data){
 									tx.executeSql("INSERT INTO pages (ID, type, text) VALUES (?,?,?)",[val['page'],val['type'],JSON.stringify(val['text'])],function(){});
 								});
 							},function(){},function(){
-								loader = true;
-								setLastVersion(true);
-								location.href = 'index.html';
+								
+								
+								//setLastVersion(true);
+								
 								$$('#ldTimer .loadpersent').html('Загрузка данных завершена');
 								$$('#ldTimer .loadpersent').css({'width': '100%'});
+								
+								//tmpl = {};
+								
+								//setTimeout(function(){
+									loadVersion = false;
+									$$.ajax({
+										url : window.startUrl+'version/',
+										async : false,
+										data : {device:window.deviceId, key: localStorage.getItem('authorize_key')},
+										dataType: 'html',
+										timeout: 5000,
+										success : function(data){
+											localStorage.setItem('version',data);
+											version = data;
+											loadVersion = true;
+											window.curentLoadBase = false;
+											loader = true;
+											//setTmpl();
+											location.href = 'index.html';
+											
+										},
+										error: function(){
+											//window.connection = false;
+											window.curentLoadBase = false;
+											loader = true;
+											loadVersion = true;
+											//setTmpl();
+											location.href = 'index.html';
+										}
+									});
+								//},150);
+								
+								
+								
 							});
 							
 						}
 					},
 					error : function(){
 						
-						$$('#ldTimer .loadpersent').html('Ошибка связи.');
-						$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
-						$$("#loadBase").show();
+						db.transaction(function(tx){
+							tx.executeSql("DELETE FROM tmpl WHERE ID>0",[]);
+						},function(){},function(){
+							
+							$$('#ldTimer .loadpersent').html('Ошибка связи');
+							$$('#ldTimer .loadpersent').css({'width': '100%', 'background':'red'});
+							$$("#loadBase").show();
+							window.curentLoadBase = false;
+							tmpl = {};
+
+						});
 						
 					}
 				});
@@ -759,5 +883,6 @@ function loadPages(step,data){
 		}
 	
 	}
+	},150);
 	
 }
