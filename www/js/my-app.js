@@ -60,7 +60,7 @@ function onRd(){
 window.myApp = new Framework7({
 	modalButtonOk: 'Подвердить',
 	modalButtonCancel: 'Отменить',
-	swipeBackPage: true,
+	swipeBackPage: false,
 	sortable: false,
 	swipeout: false,
 	swipePanel: 'left',
