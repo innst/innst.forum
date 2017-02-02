@@ -48,9 +48,6 @@ document.addEventListener("deviceready",onRd,false);
 document.addEventListener("backbutton", function(){
 	if(typeof window.backButtonHandler == 'function'){
 		return window.backButtonHandler();
-	}else{
-		$$("a.backlink").click();
-		return false;
 	}
 }, false);
 
@@ -83,7 +80,7 @@ console.log(page);
 console.log('сработал - onPageInit');
 if(typeof window.initPageLoadCallback == 'function'){
 	window.initPageLoadCallback(page);
-	window.myApp.hidePreloader();
+	//window.myApp.hidePreloader();
 }
 return;
 });
@@ -105,7 +102,7 @@ if(typeof device != 'undefined') {
 	}
 }
 
-var timer = setTimeout(function t(){
+setTimeout(function t(){
 	if(!loadCnt) {
 		setTimeout(t,100);
 	}else{
@@ -216,7 +213,6 @@ function getTmpl(id){
 var loader = false;
 
 function getPage(page){
-	window.myApp.showPreloader("Загрузка страницы");
 	checkConnection();
 	
 	if(typeof window.getPageHandler == 'function'){
@@ -233,7 +229,7 @@ function getPage(page){
 	loadVersion = false;
 	checkVersion();
 	
-	var timer = setTimeout(function t(){
+	setTimeout(function t(){
 	if(!loadVersion) {
 		setTimeout(t,300);
 	}else{
@@ -315,105 +311,44 @@ function getPage(page){
 
 }
 
-
-
-
-
-
-$$(document).on('click','a.backlink',function(e){
-	e.preventDefault();
-	if(window.curentLoadBase) return false;
-	var count = 0;
-	var lastHistory = '';
-	var prevHistory = '';
-	$$.each(window.mainView.history, function (ind, val) {
-		count = count +1;
-		prevHistory = lastHistory;
-		lastHistory = val;
-	});
-	
-	if((count > 0) && (prevHistory.indexOf("#content-") !== -1)) {
-		if((prevHistory.indexOf("#content-main") === 0) || (lastHistory.indexOf("#content-main") === 0)){
-			//window.myApp.openPanel("left");
-			$$("#pMain").click();
-			return;
-		}else{
-			window.mainView.router.back();
-                        window.replacNavbarLeftMenu(prevHistory.replace('#content-',''));
-		}
-	}else{
-		//window.myApp.openPanel("left");
-		$$("#pMain").click();
-	}
-	return;
-});
-
-$$(document).on('click','a',function(e){
-	
-	if($$(this).hasClass('backlink')) return;
-	
-	if($$(this).attr('href').indexOf('#') === 0){
-		e.preventDefault();
-	}
-	
-	if($$(this).attr('href').indexOf('link.html') === 0){
-	e.preventDefault();
-	}
-	
-	if(window.curentLoadBase) return false;
-	
-	loadPageForUrl($$(this).attr('href'));
-	
-	
-});
-
 function loadPageForUrl(href){
 	if(href.indexOf('link.html') === 0){
-		
-		
+                window.myApp.showPreloader("Загрузка страницы");
 		startPageContent(href);
-		
-		var timer = setTimeout(function t(){
-		if(!loadCnt) {
-			setTimeout(t,300);
-		}else{
-		content = loadCnt;
-		loadCnt = false;
-		
-		if(!pullToRefresh){
-		content = '<div class="page" data-page="'+curentPage+'"><div class="page-content">'+content+'</div></div>';
-		}else{
-		pullToRefresh = false;
-		content = '<div class="page" data-page="'+curentPage+'"><div class="page-content pull-to-refresh-content"><div class="pull-to-refresh-layer"><div class="preloader"></div><div class="pull-to-refresh-arrow"></div></div>'+content+'</div></div>';
-		}
-		if(curentPage == 'main' || curentPage == 'main_old') {
-			window.reload = true;
-		}
-		window.mainView.router.load({
-		  content: content,
-		  animatePages: false,
-		  reload: window.reload,
-		  ignoreCache: true
-		});
-		if(curentPage == 'main' || curentPage == 'main_old') {
-			window.reload = false;
-		}
-		window.myApp.hidePreloader();
+		setTimeout(function t(){
+			if(!loadCnt) {
+				setTimeout(t,100);
+			}else{
+			content = loadCnt;
+			loadCnt = false;
 			
-		}
-		},300);
+			if(!pullToRefresh){
+			content = '<div class="page" data-page="'+curentPage+'"><div class="page-content">'+content+'</div></div>';
+			}else{
+			pullToRefresh = false;
+			content = '<div class="page" data-page="'+curentPage+'"><div class="page-content pull-to-refresh-content"><div class="pull-to-refresh-layer"><div class="preloader"></div><div class="pull-to-refresh-arrow"></div></div>'+content+'</div></div>';
+			}
+			if(curentPage == 'main' || curentPage == 'main_old') {
+				window.reload = true;
+			}
+			window.mainView.router.load({
+			  content: content,
+			  animatePages: false,
+			  reload: window.reload,
+			  ignoreCache: true
+			});
+			if(curentPage == 'main' || curentPage == 'main_old') {
+				window.reload = false;
+			}
+			window.myApp.hidePreloader();
+				
+			}
+		},150);
 	
 	}else{
 		return;
 	}
 }
-
-
-
-
-$$(document).on('click', '.closep', function (e) {
-window.myApp.closePanel();
-});
 
 function getVersion(){
 	var last = localStorage.getItem('last_version');
@@ -430,17 +365,17 @@ if(last == version){
 		
 		loadVersion = false;
 		
-		setTimeout(function(){
+		//setTimeout(function(){
 		$$.ajax({
 			url : window.startUrl+'version/',
-			async : false,
+			//async : false,
 			data : {device:window.deviceId, key: localStorage.getItem('authorize_key')},
 			dataType: 'html',
 			timeout: 5000,
 			success : function(data){
 				if(data != version) {
 					localStorage.setItem('last_version',data);
-					version = data;
+					//version = data;
 					loadVersion = true;
 				}else{
 					loadVersion = true;
@@ -449,9 +384,12 @@ if(last == version){
 			error: function(){
 				window.connection = false;
 				loadVersion = true;
+			},
+			complete: function(){
+				loadVersion = true;
 			}
 		});
-		},150);
+		//},150);
 		
 	}else{
 		loadVersion = true;
@@ -516,20 +454,44 @@ db.transaction(function(tx){
 });
 }
 
-$$(document).on('click', '#exit', function () {
-if(window.curentLoadBase) return false;
-	if (navigator && navigator.app) {
-         navigator.app.exitApp();
-    }else{
-        if (navigator && navigator.device) {
-            navigator.device.exitApp();
+$$(document).on('click','a',function(e){
+	
+	if($$(this).hasClass('closep')) {
+		window.myApp.closePanel();
+	}
+	
+	if(window.curentLoadBase) return false;
+	
+	if($$(this).attr('id')=='loadBase'){
+		
+		e.preventDefault();
+		
+		loadBaseDefault();
+		
+	}if($$(this).attr('id')=='exit'){
+		
+		e.preventDefault();
+		
+		if (navigator && navigator.app) {
+			navigator.app.exitApp();
+		}else{
+			if (navigator && navigator.device) {
+				navigator.device.exitApp();
+			}
 		}
-    }
-});
-
-$$(document).on('click', '#loadBase',function (e) {
-if(window.curentLoadBase) return false;
-	loadBaseDefault();
+		
+	}
+	
+	if($$(this).attr('href').indexOf('#') === 0){
+		e.preventDefault();
+	}
+	
+	if($$(this).attr('href').indexOf('link.html') === 0){
+		e.preventDefault();
+	}
+	
+	loadPageForUrl($$(this).attr('href'));
+	
 });
 
 var pages_arr = [];
