@@ -3,7 +3,7 @@
 window.reloadPageInJs = false;
 
 window.debug = false;
-window.startUrl = 'http://new.forum-nnov.ru/api/mobil_app/';
+window.startUrl = 'http://www.forum-nnov.ru/api/mobil_app/';
 
 window.deviceId = '';
 
@@ -836,6 +836,7 @@ function loadPages(step,data){
 										dataType: 'html',
 										timeout: 5000,
 										success : function(data){
+                                                                                        localStorage.setItem('last_version',data);
 											localStorage.setItem('version',data);
 											version = data;
 											loadVersion = true;
