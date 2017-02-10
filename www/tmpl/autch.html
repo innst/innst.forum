@@ -1,26 +1,90 @@
-<!-- We don't need full layout in this file because this page will be parsed with Ajax. It is just enough to put here .navbar and .page-->
- 
-<!-- Top Navbar-->
-<div class="navbar">
-  <div class="navbar-inner">
-    <div class="left">
-      <a href="#" class="back link">
-        <i class="icon icon-back"></i>
-        <span>Back</span>
-       </a>
+<div class="pages navbar-fixed">
+    <div data-page="company" class="page with-subnavbar">
+        <div class="navbar">
+          <div class="navbar-inner">
+              <div class="left"><a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a></div>
+                <div class="center">Личный кабинет</div>
+                <div class="right"></div>
+                <div class="subnavbar theme-pink">
+                    <!-- Buttons row as tabs controller in Subnavbar-->
+                    <div class="buttons-row">
+                        <a href="#tab1" class="button active tab-link">Вход</a>
+                        <a href="#tab2" class="button tab-link">Регистрация</a>
+                    </div>
+                </div>
+          </div>
+        </div>
+        <!-- Tabs swipeable wrapper, required to switch tabs with swipes -->
+        <div class="tabs-swipeable-wrap">
+            <!-- Tabs, tabs wrapper -->
+            <div class="tabs">
+                <!-- Tab 1, active by default -->
+                <div id="tab1" class="page-content tab active">
+                    <div class="card">
+                        <div class="card-header">Вход в кабинет</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                              <form id="form_autch" class="list-block">
+                                  <ul>
+                                      <li>
+                                          <div class="item-content">
+                                              <div class="item-media"><i class="icon f7-icons">phone</i></div>
+                                              <div class="item-inner">
+
+                                                  <div class="item-input">
+                                                      <input placeholder="+79109101010" name="phone" type="tel">
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </li>
+                                  </ul>
+                              </form>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="card-content-inner">
+                        <a href="#" class="button button-big color-red form-to-autch">Выслать проверочный код в СМС</a>
+                    </div>
+                </div>
+                <!-- Tab 2 -->
+                <div id="tab2" class="page-content tab">
+                    <div class="card">
+                        <div class="card-header">Регистрация</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                              <form id="form_reg" class="list-block">
+                                  <ul>
+                                      <li>
+                                      <div class="item-content">
+                                          <div class="item-media"><i class="icon f7-icons">person</i></div>
+                                          <div class="item-inner">
+                                              <div class="item-input">
+                                                  <input placeholder="Ф.И.О." name="name" type="text">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      </li>
+                                      <li>
+                                      <div class="item-content">
+                                          <div class="item-media"><i class="icon f7-icons">phone</i></div>
+                                          <div class="item-inner">
+
+                                              <div class="item-input">
+                                                  <input placeholder="+79109101010" name="phone" type="tel">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      </li>
+                                  </ul>
+                              </form>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="card-content-inner">
+                        <a href="#" class="button button-big color-red form-to-reg">Выслать проверочный код в СМС</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="center sliding">Next page</div>
-    <div class="right">
-      <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-    </div>
-  </div>
 </div>
-<div class="pages">
-  <div data-page="about1" class="page">
-    <div class="page-content">
-      <div class="content-block">
-        <p>Here is Next page</p>
-      </div>
-    </div>
-  </div>
-</div>          

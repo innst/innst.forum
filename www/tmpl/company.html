@@ -1,26 +1,505 @@
-<!-- We don't need full layout in this file because this page will be parsed with Ajax. It is just enough to put here .navbar and .page-->
- 
-<!-- Top Navbar-->
-<div class="navbar">
-  <div class="navbar-inner">
-    <div class="left">
-      <a href="#" class="back link">
-        <i class="icon icon-back"></i>
-        <span>Back</span>
-       </a>
+<div class="pages navbar-fixed">
+    <div data-page="company" class="page with-subnavbar">
+        <div class="navbar">
+          <div class="navbar-inner">
+              <div class="left"><a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a></div>
+                <div class="center">о программе</div>
+                <div class="right"></div>
+                <div class="subnavbar theme-pink">
+                    <!-- Buttons row as tabs controller in Subnavbar-->
+                    <div class="buttons-row">
+                        <a href="#tab1" class="button active tab-link">История</a>
+                        <a href="#tab2" class="button tab-link">География</a>
+                        <a href="#tab3" class="button tab-link">Преимущества</a>
+                        <a href="#tab4" class="button tab-link">Реквизиты</a>
+                    </div>
+                </div>
+          </div>
+        </div>
+        <!-- Tabs swipeable wrapper, required to switch tabs with swipes -->
+        <div class="tabs-swipeable-wrap">
+            <!-- Tabs, tabs wrapper -->
+            <div class="tabs">
+                <!-- Tab 1, active by default -->
+                <div id="tab1" class="page-content tab active">
+                    <div class="content-block-title">История компании</div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">История компании «Форум» - это 15 лет развития на рынке автомобильных компонентов, это доверие ОАО ГАЗ, ОАО Соллерс и многих других ведущих автопроизводителей России. Наша цель – обеспечение российского автопарка качественными автокомпонентами.</div>
+                      </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2014</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>Компания приняла стратегию на развитие продаж оригинальной продукции к автомобилям марки ГАЗ. Значительно расширилась номенклатура самых востребованных автозапчастей, улучшилась комплектация заявок.</p>
+                                <p>Привлечены для аттестации в сеть «Детали машин ГАЗ» новые торговые представители и станции технического обслуживания в Краснодарском крае, Дагестане, Нижегородской и Тульской областях.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2013</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>Начато производство технических жидкостей торговой марки BREEZE, которые отличает доступная цена и хорошее качество. Сотни клиентов компании стали потребителями технических жидкостей BREEZE.</p>
+                                <p>Для удобства работы своих клиентов компания «Форум» создала программу Экспресс-заказ, которая позволяет всегда видеть актуальный прайс-лист, индивидуальные скидки клиентов, фото продукции, товары по распродаже и акциям.</p>
+                                <p>Компания «Форум» расширяет номенклатуру запасных частей - заключены прямые дистрибьютрские контракты с предприятиями-производителями СЭПО (электрооборудование), Саморим-ПФ (прокладки из натуральной пробки), Сервис-Ключ (инструменты).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2012</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>На Международной выставке в Москве МИМС-АВТОМЕХАНИКА компания «Форум» заключила соглашение с крупнейшим производителем автоаксессуаров – компанией AIRLINE. С 2012г. ООО «Форум» - официальный дистрибьютор торговой марки AIRLINE в 26 областях РФ. Открываются региональные представительства в г.Волгоград, Ростов-на-Дону, Тула </p>
+                                <p>За 15 лет упорной работы небольшое предприятие выросло в крупнейшего в России официального дистрибьютора запасных частей заводов ОАО «ГАЗ», ОАО «УМЗ», ОАО «ЗМЗ» и многих других заводов-смежников, поставляющих свою продукцию на конвейеры автозаводов. Сегодня в компании «Форум» работает 220 специалистов. Клиентская база расположена по всей европейской территории России. Во всех крупных областях РФ работают наши региональные менеджеры.</p>
+                                <p>По итогам работы за 2012г. компания «Форум» награждена ООО «Коммерческие автомобили – Группа ГАЗ» памятным подарком, как лучший дистрибьютор запасных частей в РФ к автомобилям марки ГАЗ!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2011</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>ООО «Форум» становится официальным торговым партнером компании AGA, крупнейшего поставщика автохимии и автокосметики производства США; Компания получила право реализовывать продукцию ГАЗ на территории Воронежской, Липецкой и Тамбовской областей.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2010</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>Руководство компании видит будущее в развитии новых направлений деятельности. Начато производство технических жидкостей под собственной торговой маркой Mosul.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2008</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>ООО «Форум» развивает направление УАЗ и заключает дистрибьюторский договор с ОАО «Автодеталь-Сервис»; Компания выкупает дистрибьюторские контракты «ГАЗ» у ООО «Автомастер» и ООО «Нижавтотехкомплект». Начинается развитие направления кузовов и кабин; Компания открывает региональное представительство в г.Краснодар с целью оптимизации логистики по Южному Федеральному округу.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2006</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>Компания «Форум» заключает дистрибьюторские контракты с ОАО «УАЗ», ОАО «ЗМЗ», ОАО «УМЗ»; «ГАЗ» начинает формировать сеть аттестованных розничных магазинов «ГАЗ Детали машин». Реализуется коммерческая политика, в соответствии с которой ООО «Форум» присваивается статус официального дистрибьютора и закрепляются магазины Северо-Кавказского, Волгоградского, Вологодского, Самарского направлений; В связи с расширением номенклатуры запчастей, необходимых для поставки в сеть «ГАЗ Детали машин», организуется складской комплекс, оснащенный современным импортным оборудованием.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2001</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>Компания открывает новый большой склад. Сосредоточение на оригинальной продукции ГАЗ, расширение номенклатуры автокомпонентов позволили привлекать и удерживать клиентов из ряда регионов страны.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">2000</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>ООО «Форум» становится официальным партнером ОАО «ГАЗ»</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">1998</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>Руководством компании было принято решение расширять географию бизнеса и привлекать клиентов из других регионов РФ: Тольятти, Казани, Уфы. Молодая команда, амбициозные цели, устойчивый спрос на автозапчасти во времена перестройки стали залогом успешного развития предприятия.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">1997</div>
+                        <div class="card-content">
+                            <div class="card-content-inner">
+                                <p>История компании начинается с организации небольшого предприятия численностью 6 человек: точка на рынке автомобильных запчастей и магазин в г.Нижний Новгород.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab 2 -->
+                <div id="tab2" class="page-content tab">
+                    <div class="content-block-title">География бизнеса</div>
+                    <img data-src="img/geo-biz.png" class="lazy-fadeIn ks-demo-lazy lazy-loaded" src="img/geo-biz.png">
+                    <div class="card">
+                        <div class="list-block accordion-list">
+                            <ul>
+                                <li class="accordion-item">
+                                    <a href="#" class="item-content item-link">
+                                        <div class="item-inner">
+                                            <div class="item-title">Мы в регионах</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="content-block">
+                                            <div class="card-content">
+                                                <div class="list-block media-list">
+                                                    <ul>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Адыгея респ.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Арахангельская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Белгородская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Волгоградская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Адыгея респ.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Вологодская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Дагестан обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Ивановская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Кабардино-Балкария</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Калининградская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Карачаево-Черксская респ.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Костромская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Костромская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Курская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Липецкая обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Нижегородская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Оренбургская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Ростовская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Самарская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Саратовская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Северная обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Ставропольскаий обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Тамбовская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Тульская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Ульяновская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                        <li>
+                                                        <a href="#" class="item-link item-content">
+                                                            <div class="item-inner">
+                                                                <div class="item-title-row">
+                                                                    <div class="item-title">Ярославская обл.</div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>«Группа ГАЗ» сформировала Сервисно-сбытовую сеть (ССС) фирменных розничных магазинов «ГАЗ Детали машин». Взаимодействие между «Группой ГАЗ» и участниками сети осуществляется через дистрибьюторов, предоставляющих логистические (транспортные и складские) услуги по поставке запасных частей к автомобилям марки ГАЗ на закрепленных за ними территориях.</p>
+                            <p>По итогам тендера, проведенного ООО «ТД «Русские Машины» в целях совершенствования сбытовой политики, с 01 марта 2006 г. ООО «Форум» имеет приоритетное право реализовывать запасные части ОАО «ГАЗ» и ОАО «УМЗ» в  вышеперечисленных логистических направлениях.</p>
+                            <p>По запасным частям для автомобилей УАЗ, ВАЗ, кузовам и кабинам, автохимии, техническим жидкостям, автоаксессуарам и инструменту география продаж компании «Форум» расширена на всю территорию РФ. Мы готовы доставить этот товар в любой регион страны.</p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <!-- Tab 3 -->
+                <div id="tab3" class="page-content tab">
+                    <div class="content-block-title">Своим клиентам мы гарантируем:</div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>ООО «Форум» -  официальный дистрибьютор ООО «Коммерческие автомобили – Группа ГАЗ», ОАО «УАЗ», ОАО «ЗМЗ», ОАО «УМЗ» и заводов-смежников. Мы работаем на рынке автомобильных запчастей 15 лет.</p>
+                            <p>С нами сотрудничают более 1 000 компаний в различных регионах страны.</p>
+                            <p>У нас достаточно опыта, чтобы грамотно развивать Ваш бизнес.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="content-block-title">География бизнеса</div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Выполнение договорных обязательств. Мы предлагаем простые и понятные условия сотрудничества, стремимся завоевать и сохранить репутацию надежного партнера, подтверждая ее соблюдением основных принципов сотрудничества и конструктивным подходом к бизнесу;</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Оригинальные запчасти, качество которых подтверждается сертификатами заводов-производителей.  Отсутствие контрафактного товара обеспечит высокую репутацию Вашего бизнеса у покупателей; </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Цены заводов-производителей. Работая напрямую с официальным дистрибьютором, Вы экономите свои деньги и получаете гарантию финансовой безопасности;</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Высокий % комплектации заказа, обеспеченный наличием на складе более 20 000 номенклатурных позиций автокомпонентов. Мы постоянно работаем над расширением ассортимента продукции.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Четкая логистика. Мы обеспечиваем бесперебойную доставку автокомпонентов по четко отлаженной логистической схеме до двух раз в неделю. Кроме того, Вы всегда можете узнать, в какой точке РФ находится Ваш товар, так как наши логисты контролируют местонахождение автомобилей с помощью спутниковой системы слежения на базе GPRS. </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Грамотное консультирование менеджерами по продаже, основывающиеся на их 15-ти летнем опыте работы на рынке автозапчастей;</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Обработку заявки в день поступления,  обусловленную постоянной работой над улучшением качества обслуживания;</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Отсрочку платежа от 14 дней, в течение которых Вы сможете продать большую часть продукции;</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Помощь развивающимся компаниям в подборе оптимальной ассортиментной матрицы запасных частей и автомобильных принадлежностей.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="content-block">
+                        <div class="content-block"><div class="content-block">
+                                <p style="text-align: justify">Мы -  динамично развивающаяся, адаптированная к условиям рынка компания, готовая учиться и делиться опытом со своими партнерами. Мы ориентируемся на долговременное и честное сотрудничество, помогая нашим клиентам развивать свой бизнес.</p>
+                        </div></div>
+                    </div>
+                </div>
+                <!-- Tab 4 -->
+                <div id="tab4" class="page-content tab">
+                    <div class="content-block-title">Реквизиты</div>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="card-content-inner">
+                            <p>Общество с ограниченной ответственностью «Форум»</p>
+
+                            <p>Юридический адрес: 603950, г.Н.Новгород, Московское шоссе, 213 «А»</p>
+                            <p>Почтовый адрес: 603124, г.Н.Новгород, ул.Вязниковская, 3А</p>
+
+                            <p>ИНН 5259079663 КПП 525901001</p>
+                            <p>Р/счет  40702810942040002725</p>
+                            <p>ВОЛГО-ВЯТСКИЙ БАНК СБЕРБАНКА РОССИИ г. НИЖНИЙ НОВГОРОД</p>
+                            <p>К/счет   30101810900000000603</p>
+                            <p>БИК 042202603</p>
+
+                            <p>Тел.8 (831) 228-00-10, факс 8 (831) 228-00-10 (332)</p>
+                            <p>Эл.почта secret@forum-nnov.ru</p>
+                            <p>Директор Толстяков Сергей Иванович, действующий на основании Устава</p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="center sliding">Next page</div>
-    <div class="right">
-      <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
-    </div>
-  </div>
 </div>
-<div class="pages">
-  <div data-page="about1" class="page">
-    <div class="page-content">
-      <div class="content-block">
-        <p>Here is Next page</p>
-      </div>
-    </div>
-  </div>
-</div>          

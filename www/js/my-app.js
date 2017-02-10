@@ -1,5 +1,4 @@
 
-
 /*адрес сервера с API*/
 window.startUrl = 'http://www.forum-nnov.ru/api/forum/';
 /*уникальный идентификатор устройства (НЕ IMAI!!!)*/
@@ -21,7 +20,7 @@ var myApp = new Framework7({
 	swipePanel: 'left',
 	router: true,
 	cache: false,
-	//dynamicPageUrl: 'content-{{name}}',
+	dynamicPageUrl: 'content-{{name}}',
 });
 
 // Export selectors engine
@@ -34,8 +33,16 @@ var d_tmpl = {};
 // Add main View
 var mainView = myApp.addView('.view-main', {
     dynamicNavbar: true,
-    domCache: true
+    //domCache: true
 });
+
+
+/*проверяем соединение c интернетом*/
+
+
+
+
+
 
 /*загружаем первую начальную страницу (в последствии проверять соединений (онлайн или офлайн))*/
 mainView.router.load({
@@ -47,6 +54,8 @@ mainView.router.load({
 
 
 myApp.onPageBeforeInit('*', function (page){
+    checkConnection();
+    alert(window.connection);
     if(typeof initPageBeforeLoadCallback == 'function'){
             initPageBeforeLoadCallback(page);
     }
@@ -65,7 +74,61 @@ myApp.onPageInit('*', function (page){
 
 
 
+function checkConnection() {
+	if(typeof navigator.connection != 'undefined'){
+	
+	var Connection = {
+		UNKNOWN: "unknown",
+        ETHERNET: "ethernet",
+        WIFI: "wifi",
+        CELL_2G: "2g",
+        CELL_3G: "3g",
+        CELL_4G: "4g",
+        CELL:"cellular",
+        NONE: "none"
+	};
+	var networkState = navigator.connection.type;
+    var states = {};
+    states[Connection.UNKNOWN]  = true;
+    states[Connection.ETHERNET] = true;
+    states[Connection.WIFI]     = true;
+    states[Connection.CELL_2G]  = true;
+    states[Connection.CELL_3G]  = true;
+    states[Connection.CELL_4G]  = true;
+    states[Connection.CELL]     = true;
+    states[Connection.NONE]     = false;
 
+    if(states[networkState]===true) {
+		window.connection = states[networkState];
+	}else if(states[networkState]===false){
+		window.connection = states[networkState];
+	}else{
+		window.connection = true;
+	}
+	}else{
+	window.connection = true;
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*-----------------Ловим события----------------------------------------*/
 /*ловим клик нижнего тулбара*/
 $$(document).on('click','.toolbar a',function(e){
     e.preventDefault();
@@ -114,6 +177,15 @@ $$(document).on('click','.link_detail',function(e){
 })
 
 
+
+
+
+
+
+
+
+
+
 /*----------------пользовательские функции-------------------*/
 
 /*функция обработки динамических страничек*/
@@ -124,7 +196,7 @@ function getDinamicPageLoad(page,id){
     }
     
     if(page == "actions"){
-        getList(page);
+        getListNewPage(page);
     }
     
     if(page == "action"){
@@ -160,10 +232,10 @@ function getRequest(page, url, type){
             success : function(data){ 
                 console.log(data);
                 if(type === "listItems"){
-                    getListItems(page, data);
+                    getListItemsAct(page, data);
                 }
                 if(type === "listNew"){
-                    getListNew(page, data);
+                    getListPageAct(page, data);
                 }
                 if(type === "detail"){
                     tmpldetail(page, data);
@@ -182,22 +254,29 @@ function getDetail(page,id){
 }
 
 /*подгрузка списка элементов динамической странички*/
-function getList(page){
-        var url;
-        var lastIndex = $$('.infinite-scroll .list-block li').length;
-        
-        if(lastIndex >0){
-            var page_count = lastIndex / window.itemsCount + 1;
-            url = window.startUrl+page+'/?PAGEN_1='+page_count+'&SIZEN_1='+window.itemsCount;
-            getRequest(page, url, "listItems");
-        }else{
-            url = window.startUrl+page+'/?PAGEN_1=1&SIZEN_1='+window.itemsCount;
-            getRequest(page, url, "listNew");
-        }
+//function getList(page){
+//        var url;
+//        var lastIndex = $$('.infinite-scroll .list-block li').length;
+//        
+//        if(lastIndex >0){
+//            var page_count = lastIndex / window.itemsCount + 1;
+//            url = window.startUrl+page+'/?PAGEN_1='+page_count+'&SIZEN_1='+window.itemsCount;
+//            getRequest(page, url, "listItems");
+//        }else{
+//            url = window.startUrl+page+'/?PAGEN_1=1&SIZEN_1='+window.itemsCount;
+//            getRequest(page, url, "listNew");
+//        }
+//}
+
+/*открываем страничку со скролом*/
+function getListNewPage(page){
+        var url = window.startUrl+page+'/';
+        getRequest(page, url, "listNew");
 }
 
+
 /*Подгрузка самой динамической странички*/
-function getListNew(page, data){
+function getListPageAct(page, data){
     var html;
     
     if(page === "actions"){
@@ -209,18 +288,24 @@ function getListNew(page, data){
 /*заполнение данных динамической страницы по скролу*/
 function getListInfinite(page){
     var loading = false;
+
     $$('.infinite-scroll').on('infinite', function(){
         /*если незакончена подрузка не реагируем*/
         if(loading) return;
 
         loading = true;
-        getList(page);
+        var lastIndex = $$('.pages').children(':last-child').find('.infinite-scroll .list-block li').length;
+        console.log($$('.pages').children(':last-child').attr('data-page'));
+        var page_count = lastIndex / window.itemsCount + 1;
+        var url = window.startUrl+page+'/?PAGEN_1='+page_count+'&SIZEN_1='+window.itemsCount;
+        getRequest(page, url, "listItems");
+        
         loading = true;
     });
 }
 
 /*дозагрузка элементов списка*/
-function getListItems(page, data){
+function getListItemsAct(page, data){
 
         if(data.body.length < window.itemsCount){
             //Если лимит достигнут, снимаем событие загрузки
@@ -232,7 +317,7 @@ function getListItems(page, data){
         // Генерируем новый хтмл HTML
         var html = tmplListItems(page, data);
         //Добавляем элементы в конец списка
-        $$('.infinite-scroll .list-block ul').append(html);
+        $$('.pages').children(':last-child').find('.infinite-scroll .list-block ul').append(html);
 }
     
 /*подставляем необходимые шаблоны для элементов списка*/  
