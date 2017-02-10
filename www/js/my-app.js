@@ -8,72 +8,92 @@ window.connection = false;
 /*количество единовременно загружаемых позиций*/
 window.itemsCount = 20;
 
-
-var myApp = new Framework7({
-    animateNavBackIcon:true,
-        pushState: true,
-	modalButtonOk: 'Подвердить',
-	modalButtonCancel: 'Отменить',
-	swipeBackPage: false,
-	sortable: false,
-	swipeout: false,
-	swipePanel: 'left',
-	router: true,
-	cache: false,
-	dynamicPageUrl: 'content-{{name}}',
-});
-
-// Export selectors engine
+/*для совместимости jqury*/
 var $$ = Dom7;
 
-//собственные функции и шаблоны
-var fn_pege = {};
-var d_tmpl = {};
 
-// Add main View
-var mainView = myApp.addView('.view-main', {
-    dynamicNavbar: true,
-    //domCache: true
-});
+/*ждем готовность устройства*/
+document.addEventListener("deviceready",onRd,false);
+
+
+
+
+function onRd(){
+    
+    window.myApp = new Framework7({
+        animateNavBackIcon:true,
+            //pushState: true,
+            modalButtonOk: 'Подвердить',
+            modalButtonCancel: 'Отменить',
+            swipeBackPage: false,
+            sortable: false,
+            swipeout: false,
+            swipePanel: 'left',
+            router: true,
+            cache: false,
+            dynamicPageUrl: 'content-{{name}}',
+    });
+
+    // Add view
+    window.mainView = window.myApp.addView('.view-main',{
+      dynamicNavbar: false,
+      //reloadPages: true
+    });
+
+    window.myApp.onPageBeforeInit('*', function (page){
+        if(typeof initPageBeforeLoadCallback == 'function'){
+                initPageBeforeLoadCallback(page);
+        }
+
+
+            if(page.name == "actions"){
+
+        }
+    })
+
+    window.myApp.onPageInit('*', function (page){
+        if(typeof initPageLoadCallback == 'function'){
+                initPageLoadCallback(page);
+        }
+    })
+
+    if(typeof device != 'undefined') {
+            window.deviceId = device.uuid;
+    }else{
+            function makeid(){
+                    var text = "";
+                    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    for( var i=0; i < 12; i++ )
+                            text += possible.charAt(Math.floor(Math.random() * possible.length));
+                    return text;
+            }
+            window.deviceId = localStorage.getItem('device_id');
+            if(!window.deviceId) {
+                    window.deviceId = makeid();
+                    localStorage.setItem('device_id',window.deviceId);
+            }
+    }
+    
+    /*загружаем первую начальную страницу (в последствии проверять соединений (онлайн или офлайн))*/
+    mainView.router.load({
+        url: 'tmpl/main.html',
+        animatePages: false
+    });
+    
+    checkConnection();
+    alert(window.connection);
+    
+    
+}
+
+
+
+
+
+
 
 
 /*проверяем соединение c интернетом*/
-
-
-
-
-
-
-/*загружаем первую начальную страницу (в последствии проверять соединений (онлайн или офлайн))*/
-mainView.router.load({
-  url: 'tmpl/main.html',
-  animatePages: false
-});
-
-
-
-
-myApp.onPageBeforeInit('*', function (page){
-    checkConnection();
-    alert(window.connection);
-    if(typeof initPageBeforeLoadCallback == 'function'){
-            initPageBeforeLoadCallback(page);
-    }
-    
-    
-        if(page.name == "actions"){
-        
-    }
-})
-
-myApp.onPageInit('*', function (page){
-    if(typeof initPageLoadCallback == 'function'){
-            initPageLoadCallback(page);
-    }
-})
-
-
-
 function checkConnection() {
 	if(typeof navigator.connection != 'undefined'){
 	
