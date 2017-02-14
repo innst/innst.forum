@@ -362,7 +362,7 @@ $$(document).on('click', '#card_link_autch_scan', function(e){
       },
       {
       "prompt" : "Наведите камеру на код.",
-      "formats" : "QR_CODE,CODE_128",
+      "formats" : "QR_CODE,DATA_MATRIX,UPC_E,UPC_A,EAN_8,EAN_13,CODE_128,CODE_39,CODE_93,CODABAR,ITF,RSS14,PDF417,RSS_EXPANDED",
       }
    );
 });
