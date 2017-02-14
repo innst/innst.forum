@@ -2,9 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, maximum-scale=1.0"/>
+    <meta name="HandheldFriendly" content="True"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#707982">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
     <title>Форум</title>
     <!-- Path to Framework7 Library CSS-->
     <link rel="stylesheet" href="css/framework7.ios.min.css">
@@ -38,7 +39,7 @@
                                 </a>
                         </li>
                         <li class="">
-                                <a class="item-link close-panel" href="link.html?page=ajax_public_authorize" >
+                                <a class="item-link close-panel" href="tmpl/autch.html" >
                                     <div class="item-content">
                                             <div class="item-media"><i class="icon f7-icons">person</i></div>
                                             <div class="item-inner">
@@ -88,7 +89,7 @@
                                 </a>
                         </li>
                         <li class="">
-                                <a class="item-link close-panel" href="link.html?page=ajax_public_reviews" >
+                                <a class="item-link close-panel" href="tmpl/feedback.html" >
                                     <div class="item-content">
                                             <div class="item-media"><i class="icon f7-icons">chat</i></div>
                                             <div class="item-inner">
@@ -145,7 +146,7 @@
         <div class="toolbar tabbar tabbar-labels">
             <div class="toolbar-inner">
                 <a href="tmpl/main.html" class="tab-link active"> <i class="icon f7-icons">home</i><span class="tabbar-label">Главная</span></a>
-                <a href="#content-tb1235" class="tab-link"><i class="icon f7-icons">person</i><span class="tabbar-label">Кабинет</span></a>
+                <a href="tmpl/autch.html" class="tab-link"><i class="icon f7-icons">person</i><span class="tabbar-label">Кабинет</span></a>
                 <a href="#content-actions" class="tab-link"> <i class="icon f7-icons">money_rubl<span class="badge bg-red">1</span></i><span class="tabbar-label">Акции</span></a>
                 <a href="tmpl/contact.html" class="tab-link item-link"> <i class="icon f7-icons">phone_round</i><span class="tabbar-label">Контакты</span></a>
             </div>
@@ -155,6 +156,8 @@
     <!-- Path to Framework7 Library JS-->
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.maskedinput.min.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&loadByRequire=1" type="text/javascript"></script>
     <!-- Path to your app js-->
     <script type="text/javascript" src="js/my-app.js"></script>

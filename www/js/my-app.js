@@ -36,7 +36,7 @@ function onRd(){
 
     // Add view
     window.mainView = window.myApp.addView('.view-main',{
-      dynamicNavbar: false,
+      dynamicNavbar: true,
       //reloadPages: true
     });
 
@@ -81,20 +81,74 @@ function onRd(){
     });
     
     checkConnection();
-    alert(window.connection);
+    
+    
+    if(window.connection){
+        
+    }
+    
     
     
 }
 
 
+/*проверяем соединение c интернетом*/
+function checkHistory(pege){
 
+    var historyPage = [];
+    var cntHistory = 0;
+    var conect = "N";
+    
+    checkConnection();
+    if(window.connection) conect = "Y";
+    
+    if(localStorage.getItem("historyPage") != null){
+        var historyPage = JSON.parse(localStorage.getItem("historyPage"));
+        cntHistory = historyPage.length;
+    }
 
+    historyPage[cntHistory] = {
+        conect: conect,
+        page: pege,
+        dateView: Math.round(new Date().getTime() / 1000)
+    };
 
+    if(conect == "N"){
+        localStorage.setItem ("historyPage", JSON.stringify(historyPage));
+    }else{
 
+        $$.ajax({
+            url : window.startUrl+"history/",
+            data : {device:window.deviceId, key: localStorage.getItem('authorize_key'), historyPage:historyPage},
+            dataType: 'json',
+            timeout: 5000,
+            success : function(data){ 
+
+                window.connection = true;
+                if(data.status == "ok"){
+                    localStorage.removeItem("historyPage");
+                }else{
+                    historyPage[cntHistory] = {
+                        conect: "N",
+                    };
+                    localStorage.setItem ("historyPage", JSON.stringify(historyPage));
+                }
+            },
+            error: function(data){
+                window.connection = false;
+                historyPage[cntHistory] = {
+                    conect: "N",
+                };
+                localStorage.setItem ("historyPage", JSON.stringify(historyPage));
+            }
+        }); 
+    }
+}
 
 
 /*проверяем соединение c интернетом*/
-function checkConnection() {
+function checkConnection(){
+    console.log("checkConnection - "+(typeof navigator.connection));
 	if(typeof navigator.connection != 'undefined'){
 	
 	var Connection = {
@@ -128,6 +182,8 @@ function checkConnection() {
 	}else{
 	window.connection = true;
 	}
+        
+        console.log("checkConnection2 - "+(window.connection));
 	
 }
 
@@ -196,9 +252,120 @@ $$(document).on('click','.link_detail',function(e){
     }
 })
 
+/*чистим телефон*/
+function checkPhoneNumber(phone){
+    phone = phone.replace(/[^0-9]/gim,'');
+    if(phone.length < 10)
+        return false;
+    
+    phone = phone.substr(-10);
+    return phone;
+}
 
 
 
+
+/*авторизация по телефону*/
+$$(document).on('click', '#form_phone_link_code', function(e){
+        e.preventDefault();
+        $$('#form_phone_error').html('').hide();
+
+        var formData = window.myApp.formToJSON('#form_phone');
+        formData.device = window.deviceId;
+        if (formData.phone.length <=0){
+            $$('#form_phone_error').html('<p class="error__page">Незаполнен телефон</p>').show();
+            $$('#form_phone_filds_phone i').addClass('color-red');
+            $$('#form_phone_filds_phone input').addClass('error');
+            return false;
+        }
+        
+        formData.phone = checkPhoneNumber(formData.phone);
+        if(formData.phone === false){
+            $$('#form_phone_error').html('<p class="error__page">Неверен формат телефона</p>').show();
+            $$('#form_phone_filds_phone i').addClass('color-red');
+            $$('#form_phone_filds_phone input').addClass('error');
+            return false;
+        }
+        $$.ajax({
+            url : window.startUrl+"history/?step=code&type=phone",
+            data : formData,
+            dataType: 'json',
+            timeout: 5000,
+            async : false,
+            success : function(data){ 
+                if(!data.ERROR){
+                        localStorage.setItem('authorize_key',data.KEY);
+                        localStorage.setItem('authorize_right',data.RIGHT);
+                        localStorage.setItem('card_num',data.CARD_NUM);
+                        localStorage.setItem('card_image',data.CARD_IMAGE);
+                        localStorage.setItem('card_image_2',data.CARD_IMAGE_2);
+                        
+                        mainView.router.load({
+                            url: 'tmpl/main.html',
+                            animatePages: false
+                        });
+                        //window.menuHide();
+                }else{
+                        $$('#form_phone_error').html('<p class="error__page">'+data.ERROR+'</p>').show();
+                }
+            },
+            error: function(data){
+                $$('#form_phone_error').html('<p class="error__page">Ошибка авторизации. Нет соединения с сервером.</p>').show();
+            }
+        });
+
+
+
+
+});
+/*гбираем ошибки с полей*/
+$$(document).on('click', 'input.error', function(){
+    $$('#form_phone_error').html('').hide();
+    $$('#form_phone_filds_phone i').removeClass('color-red');
+});
+
+
+/*авторизация по номеру карты(ручной ввод)*/
+$$(document).on('click', '#card_link_autch_manual', function(e){
+    e.preventDefault();
+    $$('#card_link_autch_manual').parent().hide();
+    $$('#form_card_autch_error').html('').hide();
+
+    $$('#card_autch').show();
+    $$('#card_autch_button').show();
+    
+});
+
+/*сканирование штрихкода(и/или QR-кода)*/
+$$(document).on('click', '#card_link_autch_scan', function(e){
+    e.preventDefault();
+    $$("#card_num").val('');
+    cordova.plugins.barcodeScanner.scan(
+        function (result) {
+            if(result.text){
+                /*вставляем результат в форму и отображаем ее*/
+                
+                    $$('#card_link_autch_manual').parent().hide();
+                    $$('#form_card_autch_error').html('').hide();
+
+                    $$("#card_num").val(result.text);
+                    $$('#card_autch').show();
+                    $$('#card_autch_button').show();
+                
+                
+                //setTimeout(function(){$$('.getCardLink').click()},500);
+                
+            }
+        },
+      function (error){
+              //window.myApp.alert("Не удалось отсканировать: " + error,'Уведомление');
+      },
+      {
+      "prompt" : "Наведите камеру на код.",
+      "formats" : "QR_CODE,CODE_128",
+      }
+   );
+});
 
 
 
@@ -228,6 +395,8 @@ function getDinamicPageLoad(page,id){
 
 /*функция возникает сразу после загрузки страницы*/
 function initPageLoadCallback(page){
+    
+    checkHistory(page.name)
     if(page.name == "maps"){
         fn_contacts();
     }
@@ -235,6 +404,8 @@ function initPageLoadCallback(page){
     if(page.name == "actions"){
         getListInfinite(page.name);
     }
+
+    
 }
 
 

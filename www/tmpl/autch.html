@@ -8,8 +8,8 @@
                 <div class="subnavbar theme-pink">
                     <!-- Buttons row as tabs controller in Subnavbar-->
                     <div class="buttons-row">
-                        <a href="#tab1" class="button active tab-link">Вход</a>
-                        <a href="#tab2" class="button tab-link">Регистрация</a>
+                        <a href="#tab1" class="button active tab-link">По телефону</a>
+                        <a href="#tab2" class="button tab-link">По карте</a>
                     </div>
                 </div>
           </div>
@@ -20,20 +20,30 @@
             <div class="tabs">
                 <!-- Tab 1, active by default -->
                 <div id="tab1" class="page-content tab active">
+                    <div class="content-block-title">Авторизация по телефону</div>
                     <div class="card">
-                        <div class="card-header">Вход в кабинет</div>
+                        <div class="card-header">Введите телефон</div>
                         <div class="card-content">
                             <div class="card-content-inner">
-                              <form id="form_autch" class="list-block">
+                              <form id="form_phone" class="list-block">
                                   <ul>
-                                      <li>
+                                      <li id="form_phone_filds_phone">
                                           <div class="item-content">
-                                              <div class="item-media"><i class="icon f7-icons">phone</i></div>
-                                              <div class="item-inner">
-
-                                                  <div class="item-input">
-                                                      <input placeholder="+79109101010" name="phone" type="tel">
-                                                  </div>
+                                                <div class="item-media"><i class="icon f7-icons">phone</i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-input">
+                                                        <input id="phone" placeholder="+79109101010" name="phone" type="tel">
+                                                    </div>
+                                              </div>
+                                          </div>
+                                      </li>
+                                      <li id="form_phone_filds_code" style="display: none">
+                                          <div class="item-content">
+                                                <div class="item-media"><i class="icon f7-icons">lock</i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-input">
+                                                        <input id="code" placeholder="1234" name="code" type="number">
+                                                    </div>
                                               </div>
                                           </div>
                                       </li>
@@ -42,46 +52,56 @@
                           </div>
                         </div>
                     </div>
+                    <div id="form_phone_error" class="card-content-inner" style="display: none"></div>
                     <div class="card-content-inner">
-                        <a href="#" class="button button-big color-red form-to-autch">Выслать проверочный код в СМС</a>
+                        <a href="#" id="form_phone_link_code" class="button button-big color-red">Выслать проверочный код в СМС</a>
+                        <a href="#" id="form_phone_link_autch" class="button button-big color-red" style="display: none">Подтвердить код</a>
                     </div>
                 </div>
                 <!-- Tab 2 -->
                 <div id="tab2" class="page-content tab">
-                    <div class="card">
-                        <div class="card-header">Регистрация</div>
+                    <div class="content-block-title">Авторизация по карте</div>
+                    <div class="card-content-inner">
+                        <a href="#" id="card_link_autch_scan" class="button button-big color-red">Отсканировать карту</a>
+                    </div>
+                    <div class="card-content-inner">
+                        <a href="#" id="card_link_autch_manual" class="button button-big color-red">ввести номер вручную</a>
+                    </div>
+                    <div class="card" id="card_autch" style="display: none">
+                        <div class="card-header">Введите карту</div>
                         <div class="card-content">
                             <div class="card-content-inner">
-                              <form id="form_reg" class="list-block">
+                              <form id="form_card_autch" class="list-block">
                                   <ul>
-                                      <li>
-                                      <div class="item-content">
-                                          <div class="item-media"><i class="icon f7-icons">person</i></div>
-                                          <div class="item-inner">
-                                              <div class="item-input">
-                                                  <input placeholder="Ф.И.О." name="name" type="text">
+                                      <li id="form_card_autch_filds_phone">
+                                          <div class="item-content">
+                                                <div class="item-media"><i class="icon f7-icons">card</i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-input">
+                                                        <input id="card_num" placeholder="123456789102" name="card" type="tel">
+                                                    </div>
                                               </div>
                                           </div>
-                                      </div>
                                       </li>
-                                      <li>
-                                      <div class="item-content">
-                                          <div class="item-media"><i class="icon f7-icons">phone</i></div>
-                                          <div class="item-inner">
-
-                                              <div class="item-input">
-                                                  <input placeholder="+79109101010" name="phone" type="tel">
+                                      <li id="form_card_autch_filds_code" style="display: none">
+                                          <div class="item-content">
+                                                <div class="item-media"><i class="icon f7-icons">lock</i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-input">
+                                                        <input id="code" placeholder="1234" name="code" type="number">
+                                                    </div>
                                               </div>
                                           </div>
-                                      </div>
                                       </li>
                                   </ul>
                               </form>
                           </div>
                         </div>
                     </div>
-                    <div class="card-content-inner">
-                        <a href="#" class="button button-big color-red form-to-reg">Выслать проверочный код в СМС</a>
+                    <div id="form_card_autch_error" class="card-content-inner" style="display: none"></div>
+                    <div class="card-content-inner" id="card_autch_button" style="display: none">
+                        <a href="#" id="form_card_autch_link_code" class="button button-big color-red">Выслать проверочный код в СМС</a>
+                        <a href="#" id="form_card_autch_link_autch" class="button button-big color-red" style="display: none">Подтвердить код</a>
                     </div>
                 </div>
             </div>
